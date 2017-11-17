@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# monitor queue
+
+QUEUE=/TestQueue
+
+# wait 10 seconds before each poll of the queue
+pollpause=10
+
+while true
+do
+	# leave off '-n' and the receive call will block until it gets a message
+	message=$(./mqrcv -n $QUEUE)
+
+	if [ "$message" != "" ]
+	then
+		echo $message
+	fi
+
+	# sleep before each poll of the queue, even if a job was just finished
+	sleep $pollpause
+done
+
