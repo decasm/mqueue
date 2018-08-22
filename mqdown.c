@@ -10,7 +10,7 @@
 
 int main(int argc,char *argv[]) {
 	int c;
-	if (1 != argc-1) {
+	if (2 != argc) {
 		printf("usage: mqdown <name>\n");
 		exit(0);
 	}
