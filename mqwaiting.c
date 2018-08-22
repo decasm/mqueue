@@ -14,12 +14,12 @@ int main(int argc,char *argv[]) {
 	mqd_t	mqd;
 	struct mq_attr attr;
 
-	if (optind != argc-1) {
+	if (2 != argc) {
 		printf("usage: mqwaiting <name>\n");
 		exit(0);
 	}
 
-	mqd = mq_open(argv[optind],O_RDONLY);
+	mqd = mq_open(argv[1],O_RDONLY);
 	if ( mqd == -1 ) {
 		perror("error");
 		exit(-1);
