@@ -8,6 +8,11 @@
 #include <string.h>
 typedef unsigned int  uint_t;
 
+/* Receive a message from a message queue.
+ * Pass "-n" to prevent blocking (NON_BLOCK)
+ *     and have program exit if there is no message.
+ */
+
 int main(int argc,char *argv[]) {
 	int		c,flags,errsv;
 	mqd_t	mqd;
@@ -31,6 +36,7 @@ int main(int argc,char *argv[]) {
 	}
 	mqd = mq_open(argv[optind],flags);
 	mq_getattr(mqd,&attr);
+
 	buff = malloc(attr.mq_msgsize);
 	if((n = mq_receive(mqd,buff,attr.mq_msgsize,&prio)) == -1) {
 		errsv = errno;
@@ -41,8 +47,8 @@ int main(int argc,char *argv[]) {
 		exit(0);
 	}
 
-	//printf("read %ld bytes,priority = %u\n",(long) n,prio);
 	printf("%s\n", (char *)buff);
+	free(buff);
 
 	mq_close(mqd);
 	exit(0);

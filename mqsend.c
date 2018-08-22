@@ -8,36 +8,44 @@
 #include<string.h>
 typedef unsigned int  uint_t;
 
+/* Send a message to a message queue */
+
 int main(int argc,char *argv[]) {
-	int msg_len = 0;
+	int msg_len = 0,c;
 	struct mq_attr attr;
 	mqd_t	mqd;
-	// void    *ptr;
-	//char str[30] = "かいせき";
-	//size_t	len;
 	uint_t	prio = 0;
-	if (argc != 3) {
-		printf("usage: mqsend <name> <message>\n");
+
+	while ((c = getopt(argc,argv,"p:")) != -1) {
+		switch (c) {
+			case 'p':
+				prio  = atoi(optarg);
+				break;
+		}
+	}
+
+	if (argc != 3 && argc != 5) {
+		printf("usage: mqsend [-p priority] <name> <message>\n");
 		exit(0);
 	}
-
-	if ((mqd = mq_open(argv[1],O_WRONLY)) == -1) {
-		perror("error");
-		exit(errno);
+	mqd = mq_open(argv[1],O_WRONLY);
+	if ( mqd == -1 ) {
+		printf("messague queue '%s' does not exist\n", argv[optind]);
+		exit(-1);
 	}
-
 	mq_getattr(mqd,&attr);
+	//printf("messages in queue = %ld\n", attr.mq_curmsgs);
 
-	msg_len = strlen(argv[2]);
+	msg_len = strlen(argv[optind+1]);
 
 	if ( msg_len > attr.mq_msgsize) {
-		perror("error:");
+		printf("error: message length greater than max message length(%ld)\n", attr.mq_msgsize);
 		exit(-1);
 	}
 
-	if (mq_send(mqd,argv[2],msg_len,prio) == -1) {
-		perror("error: mq_send: ");
-		exit(errno);
+	if (mq_send(mqd,argv[optind+1],msg_len,prio) == -1) {
+		perror("error :");
+		exit(-2);
 	}
 	mq_close(mqd);
 	exit(0);

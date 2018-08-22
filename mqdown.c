@@ -6,6 +6,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 
+/* Bring down (close) a message queue */
+
 int main(int argc,char *argv[]) {
 	int c;
 	if (1 != argc-1) {

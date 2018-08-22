@@ -1,0 +1,14 @@
+#!/bin/bash
+
+QUEUE="/test"
+CONTROL_PREFIX="[CONTROL]"
+
+if [ "$1" == "-c" ]
+then
+	# send higher priority so that it is processed next
+	mqsend -p 1 $QUEUE "$CONTROL_PREFIX $2"
+else
+	mqsend -p 0 $QUEUE "$1"
+fi
+
+

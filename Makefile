@@ -1,5 +1,12 @@
 
-all:mqup mqdown mqsend mqrcv mqlen
+PACKAGE=mqueue
+VERSION=1.0
+PACKAGEDIR=dist/$(PACKAGE)-$(VERSION)
+BINS=mqup mqdown mqsend mqrcv mqwaiting mqexists
+
+PREFIX ?= /usr
+
+all:$(BINS)
 
 mqup: mqup.c
 	gcc -Wall -o mqup mqup.c -lrt
@@ -13,9 +20,24 @@ mqsend: mqsend.c
 mqrcv: mqrcv.c
 	gcc -Wall -o mqrcv mqrcv.c -lrt
 
-mqlen: mqlen.c
-	gcc -Wall -o mqlen mqlen.c -lrt
+mqwaiting: mqwaiting.c
+	gcc -Wall -o mqwaiting mqwaiting.c -lrt
+
+mqexists: mqexists.c
+	gcc -Wall -o mqexists mqexists.c -lrt
+
+install: all
+	install -d "$(DESTDIR)$(PREFIX)/bin"
+	install -m755 -t "$(DESTDIR)$(PREFIX)/bin" $(BINS)
+	install -d "$(DESTDIR)$(PREFIX)/share/mqueue"
+	install -m644 -t "$(DESTDIR)$(PREFIX)/share/mqueue" monitor.example sendqueue.example
+
+dist:
+	rm -rf $(PACKAGEDIR)
+	mkdir -p $(PACKAGEDIR)
+	cp *.c monitor.example sendqueue.example README.md Makefile $(PACKAGEDIR)
+	tar -cvf $(PACKAGEDIR).tgz $(PACKAGEDIR)
 
 clean:
-	rm -f *~ mq{up,down,send,rcv,len}
+	rm -fr *~ $(BINS) $(PACKAGEDIR)
 

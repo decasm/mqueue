@@ -2,27 +2,39 @@ mqueue
 ======
 Simple demo of Posix message queues.
 
-All queue names must start with a '/'
+Queue names must start with a '/'
 
 mqup.c: create queue
-
-    usage: mqup [-e] <qname>
-        -e: (exclusive) fail if <qname> already exists
-
-mqdown.c: destroy queue
-
-    usage: mqdown <qname>
+	usage: mqup [-e] <name>
+		-e: fail if <name> already exists;
 
 mqsend.c: send message
-
-    usage: mqsend <qname> <message>
+	usage: mqsend <name> <message>
 
 mqrcv.c: receive message
+	usage: mqrcv [-n] <name>
+		-n: Nonblocking - fail if no message available
 
-    usage: mqrcv [-n] <qname>
-        -n: Nonblocking - exit if no message available
+mqwaiting.c: print the number of messages waiting in a queue
+	usage: mqwaiting <name>
 
-mqlen.c: print number of message in queue
+mqexists.c: does message queue exist
+	usage: mqexists <name>
+		exit(0) if it does
+		exit(-1) it it does not
+		prints a message to stdout either way
 
-    usage: mqlen <qname>
+mqdown.c: destroy queue
+	usage: mqdown <name>
+
+
+
+
+defaults and max set in /proc/sys/fs/mqueue
+/proc/sys/fs/mqueue/msg\_default -> default max messages in a queue (10)
+/proc/sys/fs/mqueue/msg\_max -> system max number of messages in a queue (10)
+/proc/sys/fs/mqueue/msgsize\_default -> default max message size (8192)
+/proc/sys/fs/mqueue/msgsize\_max -> system max message size (8192)
+sysctl and sysctl.conf can be used to change these permanently
+
 

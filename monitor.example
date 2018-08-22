@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Queue to be started/monitored
+QUEUE="/test"
+
+# polling interval in seconds
+POLL_INTERVAL=1
+
+# Prefix for messages that are handled by monitor script
+CONTROL_PREFIX="[CONTROL]"
+CONTROL_PREFIX_LENGTH=${#CONTROL_PREFIX}
+
+message=""
+
+mqup $QUEUE
+if [ "$?" != "0" ]
+then
+	echo "error starting queue - exiting"
+	exit -1
+fi
+
+while true
+do
+	message=$(mqrcv -n $QUEUE 2> /dev/null)
+	if [ "$message" != "" ]
+	then
+		control_check=${message:0:$CONTROL_PREFIX_LENGTH}
+		if [ "$control_check" == "$CONTROL_PREFIX" ]
+		then
+			message=${message:$CONTROL_PREFIX_LENGTH}
+			message=${message# *}
+			echo "Control Message($message)"
+			if [ "$message" == "STOP" ]
+			then
+				break
+			fi
+		else
+			# handle message
+			echo "Received($message)"
+		fi
+	fi
+	message=""
+	sleep $POLL_INTERVAL
+done
+mqdown $QUEUE
+
