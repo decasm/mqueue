@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Example of sending to a queue
+
 QUEUE="/test"
 CONTROL_PREFIX="[CONTROL]"
 

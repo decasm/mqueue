@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Example of a polling monitor for a queue
+
 # Queue to be started/monitored
 QUEUE="/test"
 

@@ -6,17 +6,19 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-/* Bring down (close) a message queue */
-
+/*
+ * Bring down (close) a message queue
+ */
 int main(int argc,char *argv[]) {
 	int c;
 	if (2 != argc) {
 		printf("usage: mqdown <name>\n");
-		exit(0);
+		exit(1);
 	}
+	// delete the queue
 	if ((c = mq_unlink(argv[1])) == -1) {
 		perror("error");
-		exit(-1);
+		exit(errno);
 	}
 	exit(0);
 }
