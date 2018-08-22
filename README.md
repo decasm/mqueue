@@ -29,12 +29,13 @@ mqdown.c: destroy queue
 
 
 
+Message queues have max and default limits. They can be seen in
+/proc/sys/fs/mqueue. You can use sysctl to change them or just echo.
+You can make changes permanent using /etc/sysctl.conf.
 
-defaults and max set in /proc/sys/fs/mqueue
-/proc/sys/fs/mqueue/msg\_default -> default max messages in a queue (10)
-/proc/sys/fs/mqueue/msg\_max -> system max number of messages in a queue (10)
-/proc/sys/fs/mqueue/msgsize\_default -> default max message size (8192)
-/proc/sys/fs/mqueue/msgsize\_max -> system max message size (8192)
-sysctl and sysctl.conf can be used to change these permanently
+* /proc/sys/fs/mqueue/msg\_default -> default max messages in a queue (10)
+* /proc/sys/fs/mqueue/msg\_max -> system max number of messages in a queue (10)
+* /proc/sys/fs/mqueue/msgsize\_default -> default max message size (8192)
+* /proc/sys/fs/mqueue/msgsize\_max -> system max message size (8192)
 
 
