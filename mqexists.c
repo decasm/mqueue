@@ -15,7 +15,7 @@ typedef unsigned int  uint_t;
 int main(int argc,char *argv[]) {
 	mqd_t	mqd;
 
-	if (optind != argc-1) {
+	if (2 != argc) {
 		printf("usage: mqexists <name>\n");
 		exit(1);
 	}
