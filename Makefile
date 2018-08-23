@@ -1,7 +1,7 @@
 
 PACKAGE=mqueue
-VERSION=1.0
-PACKAGEDIR=dist/$(PACKAGE)-$(VERSION)
+VERSION=1.1
+PACKAGEDIR=$(PACKAGE)-$(VERSION)
 BINS=mqup mqdown mqsend mqrcv mqwaiting mqexists
 
 PREFIX ?= /usr
@@ -33,11 +33,11 @@ install: all
 	install -m644 -t "$(DESTDIR)$(PREFIX)/share/mqueue" monitor.example sendqueue.example
 
 dist:
-	rm -rf $(PACKAGEDIR)
-	mkdir -p $(PACKAGEDIR)
-	cp *.c monitor.example sendqueue.example README.md Makefile $(PACKAGEDIR)
-	tar -cvf $(PACKAGEDIR).tgz $(PACKAGEDIR)
+	rm -rf dist
+	mkdir -p dist/$(PACKAGEDIR)
+	cp *.c monitor.example sendqueue.example README.md Makefile dist/$(PACKAGEDIR)
+	tar -zcvf dist/$(PACKAGEDIR).tgz -C dist $(PACKAGEDIR)
 
 clean:
-	rm -fr *~ $(BINS) $(PACKAGEDIR)
+	rm -fr *~ $(BINS) dist
 
